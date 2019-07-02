@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--<link href="Css/default.css" rel="stylesheet" type="text/css" />-->
+    <link rel="stylesheet" type="text/css" href="easyUI/themes/default/easyui.css" />
+    <link rel="stylesheet" type="text/css" href="easyUI/themes/icon.css" />
+    <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
+    <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+    <script language="JavaScript">
+        $(function () {
+            $('#dg').datagrid({
+                url:'/look/query',
+                pagination:true,
+                pageList:[3,6,9,12],
+                pageSize:3,
+                toolbar:"#ToolBar",
+               // singleSelect:true,//只能设置单选
+                columns:[[
+                    { field : 'ck', checkbox : true },
+                    {field:'id',title:'编号',width:100},
+                    {field:'name',title:'姓名',width:100},
+                    {field:'districtId',title:'不知道',width:100,align:'right'},
+
+                ]]
+            });
+        });
+        
+        function Add() {
+            $("#AddDialog").dialog("open").dialog('setTitle',"添加区域");
+        }
+
+        function CloseDialog(obj){
+            $("#"+obj).dialog("close");
+        }
+
+
+        //保存
+        function SaveDialog(){
+            //跳转到后台实现保存
+            //传统:取值-->通过$.ajax方法发送异步请求实现添加
+            $('#ModiyDialogForm').form('submit', {
+                url:"/look/add",  //提交的服务器地址
+                success:function(data){ //成功的回调函数
+                    //data接收服务器返回值json字符串（不是json对象）
+                    var obj=$.parseJSON(data);
+                    if(obj.result>0){
+                        $("#AddDialog").dialog("close");  //关闭
+                        //alert("添加成功");
+                        $("#dg").datagrid('reload'); //刷新
+                        $.messager.alert('提示框','恭喜添加成功!');
+                    }
+                    else
+                    {
+                        $.messager.alert('提示框','系统正在维护!');
+                    }
+                }
+            });
+        }
+
+        //弹出修改对话框
+        function ModifyBySelect(){
+            //判断有没有选择修改的记录
+            //获取所有选中行，返回的数据，如果没有选中返回空
+            var SelectRows = $("#dg").datagrid('getSelections');
+            if(SelectRows.length!=1){
+                $.messager.alert('提示框','你还没有选中行，或者选择了多行');
+                return;
+            }
+            //选择了一行
+            //还原数据
+            var SelectRow = SelectRows[0];  //获取当前行的json:{"id":1000,"name":"丰台"}
+            //打开编辑对话框
+            $("#UpDialog").dialog("open").dialog('setTitle',"修改区域");
+            //获得行对象的数据加载到表单中显示
+            //注意:SelectRow表示的就是当前行的Json:{"id":1000,"name":"丰台"}
+            // 表单对象名称与json对象的键相同即可还原
+            $("#ModiyDialogForm1").form('load',SelectRow);
+
+        }
+
+        function ModifyBySelect1(){
+            //跳转到后台实现保存
+            //传统:取值-->通过$.ajax方法发送异步请求实现添加
+            $('#ModiyDialogForm1').form('submit', {
+                url:"/look/update",  //提交的服务器地址
+                success:function(data){ //成功的回调函数
+                    //data接收服务器返回值json字符串（不是json对象）
+                    var obj=$.parseJSON(data);
+                    if(obj.result>0){
+                        $("#UpDialog").dialog("close");  //关闭
+                        //alert("添加成功");
+                        $("#dg").datagrid('reload'); //刷新
+                        $.messager.alert('提示框','恭喜添加成功!');
+                    }
+                    else
+                    {
+                        $.messager.alert('提示框','系统正在维护!');
+                    }
+                }
+            });
+        }
+//删除
+function DeleteByFruitName() {
+    //判断有无选中行
+    var SelectRows = $("#dg").datagrid('getSelections');
+    if(SelectRows.length==0){
+        $.messager.alert('提示框','你还没有选中行,操作过细点');
+        return;
+    }
+
+    //获取选中项的值   拼成:1,2,3
+    var delValue="";
+    for(var i=0;i< SelectRows.length;i++){
+        delValue=delValue+SelectRows[i].id+",";
+    }
+    delValue=delValue.substring(0,delValue.length-1);
+
+    //alert(delValue);
+
+    //发送异步请求到服务器
+    $.post("/look/delete",{"ids":delValue},function(data){
+        if(data.result>0){
+            $("#dg").datagrid('reload'); //刷新
+            //alert("添加成功");
+            $.messager.alert('提示框','恭喜你成功删除'+data.result+'行!');
+        }
+        else
+        {
+            $.messager.alert('提示框','系统正在维护!');
+        }
+    },"json");
+
+}
+      
+    </script>
+</head>
+<body>
+<div id="ToolBar">
+    <div style="height: 40px;">
+        <a href="javascript:Add()" class="easyui-linkbutton"
+           iconCls="icon-add" plain="true">添加</a>
+        <a
+            href="javascript:ModifyBySelect()" class="easyui-linkbutton"
+            iconCls="icon-edit" plain="true">修改</a>
+        <a
+            href="javascript:DeleteByFruitName()" class="easyui-linkbutton"
+            iconCls="icon-remove" plain="true">删除</a>
+    </div>
+</div>
+
+<table id="dg"></table>
+
+<div id="AddDialog" class="easyui-dialog" buttons="#AddDialogButtons"
+     style="width: 280px; height: 250px; padding: 10px 20px;" closed="true">
+    <form id="ModiyDialogForm" method="post">
+        <table>
+            <tr>
+                <td>姓名:</td>
+                <td><input type="text" name="name" /></td>
+            </tr>
+            <tr>
+                <td>不知道:</td>
+                <td><input type="text" name="districtId"></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<div id="AddDialogButtons">
+    <a href="javascript:SaveDialog()" class="easyui-linkbutton"
+       iconCls="icon-ok">保存</a>
+    <a href="javascript:CloseDialog('AddDialog')"
+       class="easyui-linkbutton" iconCls="icon-cancel">取消</a>
+</div>
+
+<div id="UpDialog" class="easyui-dialog" buttons="#UpDialogButtons"
+     style="width: 280px; height: 250px; padding: 10px 20px;" closed="true">
+    <form id="ModiyDialogForm1" method="post">
+        <table>
+            <input type="hidden" name="id" />
+            <tr>
+                <td>姓名:</td>
+                <td><input type="text" name="name" id="vdxc" /></td>
+            </tr>
+            <tr>
+                <td>不知道:</td>
+                <td><input type="text" name="districtId" id="dfc"></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<div id="UpDialogButtons">
+    <a href="javascript:ModifyBySelect1()" class="easyui-linkbutton"
+       iconCls="icon-ok">提交</a>
+    <a href="javascript:CloseDialog('UpDialog')"
+       class="easyui-linkbutton" iconCls="icon-cancel">取消</a>
+</div>
+
+
+</body>
+</html>

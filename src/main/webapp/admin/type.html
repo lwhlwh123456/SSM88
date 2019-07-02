@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="Css/default.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="easyUI/themes/default/easyui.css" />
+    <link rel="stylesheet" type="text/css" href="easyUI/themes/icon.css" />
+    <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
+    <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="js/type.js"></script>
+</head>
+<body>
+<div id="ToolBar">
+    <div style="height: 40px;">
+        <a href="javascript:Add()" class="easyui-linkbutton"
+           iconCls="icon-add" plain="true">添加</a>
+        <a
+                href="javascript:ModifyBySelect()" class="easyui-linkbutton"
+                iconCls="icon-edit" plain="true">修改</a>
+        <a
+                href="javascript:DeleteByFruitName()" class="easyui-linkbutton"
+                iconCls="icon-remove" plain="true">删除</a>
+    </div>
+</div>
+
+<table id="dg"></table>
+
+<div id="AddDialog" class="easyui-dialog" buttons="#AddDialogButtons"
+     style="width: 280px; height: 250px; padding: 10px 20px;" closed="true">
+    <form id="ModiyDialogForm" method="post">
+        <table>
+            <tr>
+                <td>姓名:</td>
+                <td><input type="text" name="name" /></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<div id="AddDialogButtons">
+    <a href="javascript:SaveDialog()" class="easyui-linkbutton"
+       iconCls="icon-ok">保存</a>
+    <a href="javascript:CloseDialog('AddDialog')"
+       class="easyui-linkbutton" iconCls="icon-cancel">取消</a>
+</div>
+
+<div id="UpDialog" class="easyui-dialog" buttons="#UpDialogButtons"
+     style="width: 280px; height: 250px; padding: 10px 20px;" closed="true">
+    <form id="ModiyDialogForm1" method="post">
+        <table>
+            <input type="hidden" name="id" />
+            <tr>
+                <td>姓名:</td>
+                <td><input type="text" name="name" id="vdxc" /></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<div id="UpDialogButtons">
+    <a href="javascript:ModifyBySelect1()" class="easyui-linkbutton"
+       iconCls="icon-ok">提交</a>
+    <a href="javascript:CloseDialog('UpDialog')"
+       class="easyui-linkbutton" iconCls="icon-cancel">取消</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <package name="com.hpit.demo1.entity"/>
+    </typeAliases>
+    
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
+    </plugins>
+
+    <mappers>
+        <mapper resource="com/hpit/demo1/mapper/DistrictMapper.xml"></mapper>
+        <mapper resource="com/hpit/demo1/mapper/HouseMapper.xml"></mapper>
+        <mapper resource="com/hpit/demo1/mapper/StreetMapper.xml"></mapper>
+        <mapper resource="com/hpit/demo1/mapper/TypeMapper.xml"></mapper>
+        <mapper resource="com/hpit/demo1/mapper/UsersMapper.xml"></mapper>
+    </mappers>
+</configuration>

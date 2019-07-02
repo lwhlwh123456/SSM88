@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="easyUI/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="easyUI/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="easyUI/css/demo.css">
+    <script src="js/jquery-1.8.3.js"></script>
+    <script src="js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="js/house.js"></script>
+</head>
+<body>
+<table id="dg"></table>
+
+<div id="ToolBar">
+    <div style="height: 40px;">
+        <a href="javascript:Add()" class="easyui-linkbutton"
+           iconCls="icon-add" plain="true">添加</a>
+        <a
+                href="javascript:ModifyBySelect()" class="easyui-linkbutton"
+                iconCls="icon-edit" plain="true">修改</a>
+        <a
+                href="javascript:DeleteMore()" class="easyui-linkbutton"
+                iconCls="icon-remove" plain="true">删除选中项</a>
+    </div>
+    <!--搜索条件-->
+    <div>
+        区域:<select name=""></select>
+        街道:<select name=""></select>
+        类型:<select name=""></select>
+        开始价格:<input type="text" name="startPrice" id="startAge"/>
+        结束价格:<input type="text" name="endPrice" id="endAge"/>
+        <a id="btn" href="javascript:searchUser();" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</a>
+
+    </div>
+</div>
+
+</body>
+</html>
