@@ -1,5 +1,6 @@
 package com.hpit.demo1.conteroller;
 
+import com.hpit.demo1.entity.Users;
 import com.hpit.demo1.service.UsersService;
 import com.hpit.demo1.util.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +32,9 @@ public class UsersConrtollers {
 
     @RequestMapping("deng")
     public String deng(String username, String password, Model model,HttpSession session){
-        com.hpit.demo1.entity.Users usersname = usersService.deng(username, password);
-        System.out.println("users = " + usersname.getId());
+        System.out.println("username = " + username+"="+password);
+        Users usersname = usersService.deng(username, password);
+
         if (usersname==null){
             model.addAttribute("lock","用户和密码错误");
             return "login";
